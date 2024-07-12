@@ -21,3 +21,25 @@ def tables(request):
     'segment': 'tables'
   }
   return render(request, "pages/dynamic-tables.html", context)
+
+def tanques(request):
+  tanques = Tanque.objects.all()
+
+  context = { "tanques": tanques }
+
+  return render(request, 'pages/tanques/lista.html', context)
+#end def
+
+def tanque(request, id_tanque):
+  tanque = Tanque.objects.get(id_tanque=id_tanque)
+  mediciones = Medicion.objects.filter(id_sensor=tanque.id_sensor)
+  nivel = mediciones.last()
+
+  context = { 
+    "tanque": tanque,
+    "mediciones": mediciones,
+    "nivel_actual": nivel
+  }
+
+  return render(request, 'pages/tanques/tanque.html', context)
+#end def

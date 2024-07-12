@@ -20,14 +20,14 @@
           {% if request.user.is_superuser %}
           <a href="{% url 'admin:index' %}" class="nav-link ">
           {% else %}
-          <a href="{% url 'index' %}" class="nav-link ">
+          <a href="{% url 'home:index' %}" class="nav-link ">
           {% endif %}
             <span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span>
           </a>
         </li>
-        <li class="nav-item {% if 'tables' in segment %}active{% endif %}">
-          <a href="{% url 'tables' %}" class="nav-link "><span class="pcoded-micon"><i
-                class="feather icon-server text-c-green"></i></span><span class="pcoded-mtext">Dynamic Tables</span></a>
+        <li class="nav-item active">
+          <a href="{% url 'home:tanques' %}" class="nav-link "><span class="pcoded-micon"><i
+                class="feather icon-server text-c-green"></i></span><span class="pcoded-mtext">Tanques</span></a>
         </li>
         <li class="nav-item">
           <a target="_blank" href="/api/product/" class="nav-link "><span class="pcoded-micon"><i
