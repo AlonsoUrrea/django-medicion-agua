@@ -1,6 +1,11 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
+{% block extrastyle %}
+  <!-- morris css -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/chart-morris/css/morris.css' %}">
+{% endblock extrastyle %}
+
 {% block breadcrumbs %}{% endblock breadcrumbs %}
 
 {% block content %}
@@ -18,7 +23,7 @@
                     <div class="row d-flex align-items-center">
                         <div class="col-9">
                         <h3 class="f-w-300 d-flex align-items-center m-b-0"><i
-                            class="feather icon-arrow-up text-c-green f-30 m-r-10"></i>{{ nivel_actual.porcentaje_a_100 }}%</h3>
+                            class="feather icon-droplet text-c-green f-30 m-r-10"></i>{{ nivel_actual.porcentaje_a_100 }}%</h3>
                         </div>
                     </div>
                     <div class="progress m-t-30" style="height: 7px;">
@@ -46,7 +51,50 @@
             </div>
         </div>
       </div>
+      <div class="col-xl-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>&Uacute;ltimas mediciones</h5>
+          </div>
+          <div class="card-block">
+            <div id="medidas-lineal" class="ChartShadow" style="height:300px"></div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
 
 {% endblock content %}
+
+{% block extra_js %}
+
+  <!-- chart-morris Js -->
+  <script src="{% static 'assets/plugins/chart-morris/js/raphael.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/chart-morris/js/morris.min.js' %}"></script>
+  <script src="{% static 'assets/js/pages/chart-morris-custom.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+        new Morris.Line({
+            // ID of the element in which to draw the chart.
+            element: 'medidas-lineal',
+            // Chart data records -- each entry in this array corresponds to a point on
+            // the chart.
+            data: [
+                {% for medicion in mediciones %}
+                {time: "{{ medicion.hora_fecha|date:'Y-m-d H:i:s' }}", cm: {{ medicion.porcentaje }} },
+                {% endfor %}
+            ],
+            // The name of the data record attribute that contains x-values.
+            xkey: 'time',
+            // A list of names of data record attributes that contain y-values.
+            ykeys: ['cm'],
+            ymax: 1,
+            // Labels for the ykeys -- will be displayed when you hover over the
+            // chart.
+            labels: ['Nivel de agua'],
+            lineColors: ['#1de9b6', '#A389D4']
+        });
+    })
+  </script>
+
+{% endblock extra_js %}

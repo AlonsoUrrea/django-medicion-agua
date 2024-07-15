@@ -1,3 +1,5 @@
+import datetime
+
 from django.shortcuts import render, redirect
 from admin_datta.forms import RegistrationForm, LoginForm, UserPasswordChangeForm, UserPasswordResetForm, UserSetPasswordForm
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetConfirmView, PasswordResetView
@@ -20,7 +22,7 @@ def tables(request):
   context = {
     'segment': 'tables'
   }
-  return render(request, "pages/dynamic-tables.html", context)
+  return render(request, "pages/chart-morris.html", context)
 
 def tanques(request):
   tanques = Tanque.objects.all()
@@ -32,7 +34,9 @@ def tanques(request):
 
 def tanque(request, id_tanque):
   tanque = Tanque.objects.get(id_tanque=id_tanque)
-  mediciones = Medicion.objects.filter(id_sensor=tanque.id_sensor)
+  mediciones = Medicion.objects\
+    .filter(id_sensor=tanque.id_sensor)#\
+    #.filter(hora_fecha__gte=datetime.date(2024,7,12))
   nivel = mediciones.last()
 
   context = { 
